@@ -16,7 +16,7 @@ public class Rotation : MonoBehaviour
 
     public void RotateY(Rigidbody rigidbody)
     {
-        rigidbody.transform.eulerAngles += new Vector3(0, mouseX, 0);
+        rigidbody.transform.eulerAngles = new Vector3(0, mouseX, 0);
     }
 
     public void RotateX()
