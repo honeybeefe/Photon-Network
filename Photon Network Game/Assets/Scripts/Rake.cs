@@ -8,7 +8,8 @@ public enum State
 {
     WALK,
     ATTACK,
-    DIE
+    DIE,
+    NONE
 }
 
 public class Rake : MonoBehaviour
@@ -42,12 +43,14 @@ public class Rake : MonoBehaviour
 
             case State.DIE: Die();
                     break;
+            case State.NONE:
+                break;
         }
     }
 
     public void Walk()
     {
-        navMeshAgent.SetDestination(destination.transform.position);        
+        navMeshAgent.SetDestination(destination.transform.position);
     }
 
     public void Attack()
@@ -57,7 +60,21 @@ public class Rake : MonoBehaviour
 
     public void Die()
     {
-        animator.SetTrigger("Die");
+        if (state != State.NONE)
+        {
+            state = State.DIE;
+
+            navMeshAgent.speed = 0;
+
+            animator.SetTrigger("Die");
+
+            state = State.NONE;
+        }
+    }
+
+    public void Release()
+    {
+        PhotonNetwork.Destroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)

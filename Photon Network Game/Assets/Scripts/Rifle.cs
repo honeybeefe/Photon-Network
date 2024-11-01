@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class Rifle : MonoBehaviour
+public class Rifle : MonoBehaviourPunCallbacks
 {
     private Ray ray;
     private RaycastHit rayCastHit;
+
     [SerializeField] Camera camera;
+    [SerializeField] LayerMask layerMask;
 
     void Update()
     {
@@ -14,9 +17,14 @@ public class Rifle : MonoBehaviour
         {
             ray = camera.ScreenPointToRay(Input.mousePosition);
 
-            if(Physics.Raycast(ray, out rayCastHit, Mathf.Infinity))
+            if(Physics.Raycast(ray, out rayCastHit, Mathf.Infinity, layerMask))
             {
-                Debug.Log(rayCastHit.collider.gameObject.name);
+                PhotonView photonView = rayCastHit.collider.GetComponent<PhotonView>();
+
+                if(photonView.IsMine)
+                {
+                    photonView.GetComponent<Rake>().Die();
+                }
             }
         }
     }
