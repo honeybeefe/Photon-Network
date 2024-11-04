@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
+using Photon.Realtime;
 using Photon.Pun;
+using ExitGames.Client.Photon;
 
 [RequireComponent(typeof(Move))]
 [RequireComponent(typeof(Rotation))]
-public class Character : MonoBehaviourPun
+public class Character : MonoBehaviourPunCallbacks
 {
     [SerializeField] Move move;
     [SerializeField] Rotation rotation;
@@ -45,7 +48,7 @@ public class Character : MonoBehaviourPun
 
     public void DisableCamera()
     {
-        //현재 플러이어가 나 자신이라면
+        //현재 플레이어가 나 자신이라면
         if (photonView.IsMine)
         {
             Camera.main.gameObject.SetActive(false);
